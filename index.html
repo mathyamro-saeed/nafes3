@@ -7,133 +7,119 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #5d8aa8; 
+            --primary-color: #5d8aa8;
+            --header-bg: #4a708b; /* لون الواجهة المغاير */
             --secondary-color: #f0f4f8;
-            --success-color: #8fbc8f; 
-            --error-color: #e9967a; 
             --text-color: #333;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--secondary-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin: 0; padding: 15px;
+            display: flex; flex-direction: column; align-items: center;
         }
 
+        /* تنسيق الواجهة العلوية */
         .header {
             text-align: center;
-            background: white;
-            padding: 20px;
+            background: var(--header-bg);
+            color: white;
+            padding: 15px;
             border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            width: 100%;
-            max-width: 700px;
+            width: 100%; max-width: 650px;
             margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .header h1 { color: var(--primary-color); margin: 0; font-size: 22px; }
-        .header p { margin: 5px 0; font-size: 16px; color: #666; }
+        .header h1 { margin: 0; font-size: 20px; }
+        .school-name { font-size: 15px; margin-top: 5px; opacity: 0.9; }
+
+        /* سطر المعلم والمدير */
+        .staff-info {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-size: 12px; /* خط أصغر للجوال */
+            margin-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 8px;
+            white-space: nowrap;
+        }
 
         .quiz-container {
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            width: 100%;
-            max-width: 700px;
+            width: 100%; max-width: 650px;
             text-align: center;
         }
 
-        .progress-bar {
-            height: 10px;
-            background: #eee;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
+        .progress-container { margin-bottom: 20px; }
+        .progress-bar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary-color); width: 0%; transition: 0.3s; }
 
-        .progress-fill {
-            height: 100%;
-            background: var(--primary-color);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
+        .question-text { font-size: 20px; font-weight: bold; margin-bottom: 25px; }
 
-        .question-text {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        
         .option-btn {
-            padding: 15px;
-            font-size: 18px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Cairo', sans-serif;
+            padding: 15px; font-size: 17px; border: 2px solid #eee;
+            border-radius: 12px; background: white; cursor: pointer;
+            font-family: 'Cairo', sans-serif; transition: 0.2s;
+        }
+        .option-btn:active { background: #f0f0f0; transform: scale(0.98); }
+
+        .result-screen { display: none; }
+        .wa-btn {
+            background-color: #25D366; color: white; border: none;
+            padding: 12px 25px; border-radius: 10px; font-size: 16px;
+            cursor: pointer; font-family: 'Cairo'; margin-top: 20px;
         }
 
-        .option-btn:hover { border-color: var(--primary-color); background: #f9f9f9; }
-        .correct { background-color: var(--success-color) !important; color: white; border-color: var(--success-color); }
-        .wrong { background-color: var(--error-color) !important; color: white; border-color: var(--error-color); }
-
-        .nav-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 40px;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            display: none;
-            box-shadow: 0 4px 10px rgba(93, 138, 168, 0.3);
+        @media (max-width: 480px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .staff-info { font-size: 11px; gap: 5px; }
         }
-
-        #results { display: none; text-align: right; }
-        .result-card { background: #fff; padding: 15px; border-radius: 15px; margin-bottom: 15px; border-right: 5px solid var(--primary-color); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-
-        @media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>الاختبارات الوطنية "نافس" 2026 - تدريبات الصف الثالث الابتدائي</h1>
-    <p>مدرسة سعيد بن المسيب الابتدائية بأبها</p>
-    <p>معلم المادة: أ. عمرو العمري | مدير المدرسة: عبدالرحمن النقاز</p>
+<div class="header" id="main-header">
+    <h1>اختبار نافس الوطني التجريبي 2026</h1>
+    <div class="school-name">مدرسة سعيد بن المسيب الابتدائية بأبها</div>
+    <div class="staff-info">
+        <span>أ. عمرو العمري (معلم المادة)</span>
+        <span>|</span>
+        <span>أ. عبدالرحمن النقاز (مدير المدرسة)</span>
+    </div>
 </div>
 
 <div class="quiz-container" id="quiz-box">
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    <div id="q-counter" style="margin-bottom: 10px; font-size: 14px; color: #777;">السؤال 1 من 15</div>
-    <div class="question-text" id="question-text">جاري التحميل...</div>
-    <div class="options-grid" id="options-grid"></div>
-    <button class="nav-btn" id="next-btn" onclick="nextQuestion()">السؤال التالي ←</button>
+    <div id="start-screen">
+        <h3>مرحباً بك يا بطل</h3>
+        <p>الرجاء كتابة اسمك الثلاثي للبدء:</p>
+        <input type="text" id="student-name" style="padding:10px; width:80%; border-radius:8px; border:1px solid #ccc; margin-bottom:15px; text-align:center; font-family:'Cairo';">
+        <br>
+        <button class="option-btn" style="background:var(--primary-color); color:white; width:100px;" onclick="startQuiz()">ابدأ</button>
+    </div>
+
+    <div id="quiz-content" style="display:none;">
+        <div class="progress-container">
+            <div id="q-counter" style="font-size:13px; color:#666; margin-bottom:5px;">السؤال 1 من 15</div>
+            <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        </div>
+        <div class="question-text" id="question-text"></div>
+        <div class="options-grid" id="options-grid"></div>
+    </div>
 </div>
 
-<div class="quiz-container" id="results">
-    <h2 style="text-align: center; color: var(--primary-color);">نتيجتك النهائية</h2>
-    <h3 style="text-align: center;"><span id="final-score" style="font-size: 36px;">0</span> من 15</h3>
-    <button class="nav-btn" style="display:block; margin: 20px auto;" onclick="location.reload()">إعادة المحاولة</button>
-    <hr>
-    <h3>مراجعة الإجابات:</h3>
-    <div id="review-area"></div>
+<div class="quiz-container result-screen" id="results">
+    <h2 style="color:var(--primary-color);">تم الانتهاء بنجاح!</h2>
+    <p>شكراً لك يا بطل على المحاولة. سيتم إرسال نتيجتك للمعلم.</p>
+    <div id="summary-text" style="background:#f9f9f9; padding:15px; border-radius:10px; margin:15px 0;"></div>
+    <button class="wa-btn" onclick="sendToWhatsApp()">إرسال النتيجة للمعلم (واتساب) ✅</button>
 </div>
 
 <script>
@@ -155,7 +141,22 @@
         { q: "اشترى خالد 5 أقلام بسعر 4 ريالات للقلم الواحد. كم دفع للبائع؟", a: ["9 ريالات", "20 ريالاً", "1 ريال", "25 ريالاً"], c: 1 }
     ];
 
-    let currentIdx = 0, score = 0, userAnswers = [];
+    let currentIdx = 0, score = 0, studentName = "";
+
+    // منع الإجابة المكررة
+    window.onload = () => {
+        if(localStorage.getItem('nafis_completed')) {
+            document.body.innerHTML = "<div class='quiz-container'><h3>عذراً!</h3><p>لقد قمت بالإجابة على هذا الاختبار مسبقاً.</p></div>";
+        }
+    };
+
+    function startQuiz() {
+        studentName = document.getElementById('student-name').value;
+        if(studentName.length < 3) { alert("لطفاً اكتب اسمك الثلاثي"); return; }
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('quiz-content').style.display = 'block';
+        loadQuestion();
+    }
 
     function loadQuestion() {
         const q = quizData[currentIdx];
@@ -164,42 +165,34 @@
         document.getElementById("question-text").innerText = q.q;
         const grid = document.getElementById("options-grid");
         grid.innerHTML = "";
-        document.getElementById("next-btn").style.display = "none";
-
         q.a.forEach((opt, i) => {
             const btn = document.createElement("button");
             btn.className = "option-btn";
             btn.innerText = opt;
             btn.onclick = () => {
-                if (i === q.c) { btn.classList.add("correct"); score++; }
-                else { btn.classList.add("wrong"); document.querySelectorAll(".option-btn")[q.c].classList.add("correct"); }
-                document.querySelectorAll(".option-btn").forEach(b => b.disabled = true);
-                userAnswers.push({q: q.q, user: i, correct: q.c});
-                document.getElementById("next-btn").style.display = "inline-block";
+                if(i === q.c) score++;
+                currentIdx++;
+                if(currentIdx < quizData.length) loadQuestion();
+                else finalize();
             };
             grid.appendChild(btn);
         });
     }
 
-    function nextQuestion() {
-        currentIdx++;
-        if (currentIdx < quizData.length) loadQuestion();
-        else showResults();
+    function finalize() {
+        localStorage.setItem('nafis_completed', 'true');
+        document.getElementById('quiz-box').style.display = 'none';
+        document.getElementById('results').style.display = 'block';
+        const wrongs = 15 - score;
+        document.getElementById('summary-text').innerHTML = `<strong>الطالب:</strong> ${studentName}<br><strong>الإجابات الصحيحة:</strong> ${score}<br><strong>الإجابات الخاطئة:</strong> ${wrongs}`;
     }
 
-    function showResults() {
-        document.getElementById("quiz-box").style.display = "none";
-        document.getElementById("results").style.display = "block";
-        document.getElementById("final-score").innerText = score;
-        const area = document.getElementById("review-area");
-        userAnswers.forEach((ans, i) => {
-            const card = document.createElement("div");
-            card.className = "result-card";
-            card.innerHTML = `<strong>س${i+1}: ${ans.q}</strong><br><span style="color: ${ans.user === ans.correct ? 'green' : 'red'}">إجابتك: ${quizData[i].a[ans.user]}</span><br>${ans.user !== ans.correct ? `<span style="color: green">الإجابة الصحيحة: ${quizData[i].a[ans.correct]}</span>` : ''}`;
-            area.appendChild(card);
-        });
+    function sendToWhatsApp() {
+        const wrongs = 15 - score;
+        const phone = "9665XXXXXXXX"; // ضع رقمك هنا أستاذ عمرو (مثال: 966512345678)
+        const text = `تقرير اختبار نافس 2026%0A-----------------%0Aاسم الطالب: ${studentName}%0Aالنتيجة: ${score} من 15%0Aالصح: ${score} ✅%0Aالخطأ: ${wrongs} ❌`;
+        window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
     }
-    loadQuestion();
 </script>
 </body>
 </html>
