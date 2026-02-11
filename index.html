@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نافس 2026 - الأعداد والعمليات</title>
+    <title>نافس 2026 - مدرسة سعيد بن المسيب</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --primary-color: #5d8aa8; 
-            --header-bg: #2c3e50; /* لون الواجهة المغاير */
+            --header-bg: #2c3e50; 
             --secondary-color: #f4f7f9; 
         }
         body { 
@@ -18,17 +18,18 @@
             display: flex; flex-direction: column; align-items: center; 
         }
         
-        /* واجهة العنوان بلون مختلف وتصميم رسمي */
+        /* واجهة العنوان بتصميم رسمي ولون مغاير */
         .header {
             text-align: center; background: var(--header-bg); color: white;
             padding: 15px 10px; border-radius: 12px; width: 100%; max-width: 600px;
             margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .header h1 { margin: 0 0 8px 0; font-size: 18px; }
+        .header h1 { margin: 0 0 5px 0; font-size: 17px; }
+        .school-title { font-size: 14px; margin-bottom: 8px; opacity: 0.9; }
 
         /* سطر المدير والمعلم بخط أصغر للجوال وفي صف واحد */
         .staff-info {
-            display: flex; justify-content: center; gap: 8px;
+            display: flex; justify-content: center; gap: 6px;
             font-size: 10px; border-top: 1px solid rgba(255,255,255,0.1);
             padding-top: 8px; white-space: nowrap; overflow: hidden;
         }
@@ -60,7 +61,8 @@
         
         @media (max-width: 450px) { 
             .options-grid { grid-template-columns: 1fr; }
-            .header h1 { font-size: 16px; }
+            .header h1 { font-size: 15px; }
+            .school-title { font-size: 12px; }
         }
     </style>
 </head>
@@ -68,6 +70,7 @@
 
 <div class="header">
     <h1>اختبار نافس الوطني التجريبي 2026</h1>
+    <div class="school-title">مدرسة سعيد بن المسيب الابتدائية بأبها</div>
     <div class="staff-info">
         <span>معلم المادة / أ. عمرو العمري</span>
         <span>|</span>
@@ -84,16 +87,15 @@
 
 <div class="quiz-container" id="results">
     <h2 style="color:var(--primary-color); font-size: 18px;">تم الانتهاء بنجاح!</h2>
-    <p style="font-size: 13px;">شكراً لك يا بطل، تم حفظ إجاباتك في سجلات المعلم.</p>
+    <p style="font-size: 13px;">شكراً لك يا بطل، تم حفظ إجاباتك في سجلات المدرسة.</p>
     <div id="status-area">
         <div class="loading"></div>
-        <p style="font-size: 12px; color: #888;">جاري إرسال النتيجة للجدول...</p>
+        <p style="font-size: 12px; color: #888;">جاري تحديث جدول البيانات...</p>
     </div>
 </div>
 
 <script>
-    // الرابط البرمجي الخاص بك
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyeLtvYxTOBynOdyYbA4xs_pF966lmSvf1XdUSogAEjg75525kxeohyyLAQ6nBVsZl2/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxeJjANiQkRAkllPICDLLeme2KeRjRKjbCfivGOMGXgBjJadxoh79Cd9Dly3Id0ume_/exec';
 
     const quizData = [
         { q: "ما القيمة المنزلية للرقم (5) في العدد 2534؟", a: ["5", "50", "500", "5000"], c: 2 },
@@ -115,9 +117,8 @@
 
     let currentIdx = 0, score = 0;
 
-    // تفعيل المحاولة الواحدة فقط
-    if(localStorage.getItem('nafis_attempt_final')) {
-        document.body.innerHTML = "<div class='quiz-container' style='margin-top:50px;'><h3>عذراً يا بطل!</h3><p>لقد قمت بأداء هذا الاختبار مسبقاً.</p></div>";
+    if(localStorage.getItem('nafis_final_v3')) {
+        document.body.innerHTML = "<div class='quiz-container' style='margin-top:50px;'><h3>عذراً!</h3><p>تم إكمال هذا الاختبار مسبقاً من هذا الجهاز.</p></div>";
     }
 
     function loadQuestion() {
@@ -145,7 +146,7 @@
     function submitData() {
         document.getElementById('quiz-box').style.display = 'none';
         document.getElementById('results').style.display = 'block';
-        localStorage.setItem('nafis_attempt_final', 'true');
+        localStorage.setItem('nafis_final_v3', 'true');
 
         fetch(scriptURL, {
             method: 'POST',
@@ -156,9 +157,9 @@
                 wrong: 15 - score
             })
         }).then(() => {
-            document.getElementById('status-area').innerHTML = "<p style='color:green; font-weight:bold;'>✓ تم تحديث نتيجتك في السجلات</p>";
+            document.getElementById('status-area').innerHTML = "<p style='color:green; font-weight:bold;'>✓ تم التحديث بنجاح</p>";
         }).catch(() => {
-            document.getElementById('status-area').innerHTML = "<p style='color:red;'>⚠️ حدث خطأ في الشبكة، لكن تم تسجيل محاولتك.</p>";
+            document.getElementById('status-area').innerHTML = "<p style='color:red;'>⚠️ حدث خطأ في الشبكة.</p>";
         });
     }
 
