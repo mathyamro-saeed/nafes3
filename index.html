@@ -3,28 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تدريبات اختبار نافس - محاولتان</title>
+    <title>تدريبات اختبار نافس - مدرسة سعيد بن المسيب</title>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary-color: #5d8aa8; --header-bg: #2c3e50; --secondary-color: #f4f7f9; }
-        body { font-family: 'Vazirmatn', sans-serif; background-color: var(--secondary-color); margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
-        .header { text-align: center; background: var(--header-bg); color: white; padding: 15px 10px; border-radius: 12px; width: 100%; max-width: 600px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        body { 
+            font-family: 'Vazirmatn', sans-serif; 
+            background-color: var(--secondary-color); 
+            margin: 0; padding: 10px; 
+            display: flex; flex-direction: column; align-items: center; 
+        }
+        
+        .header {
+            text-align: center; background: var(--header-bg); color: white;
+            padding: 15px 10px; border-radius: 12px; width: 100%; max-width: 600px;
+            margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
         .header h1 { margin: 0; font-size: 19px; }
         .header h2 { margin: 5px 0 8px 0; font-size: 15px; font-weight: normal; color: #ced4da; }
+        
         .school-title { font-size: 13px; margin-bottom: 5px; opacity: 0.9; }
-        .test-note { font-size: 14px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px; margin-top: 10px; color: #ffeb3b; font-weight: bold; border: 1px dashed rgba(255,235,59,0.3); line-height: 1.4; }
-        .staff-info { display: flex; justify-content: center; gap: 6px; font-size: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; white-space: nowrap; }
-        .quiz-container { background: white; padding: 25px; border-radius: 15px; width: 100%; max-width: 600px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+        .test-note { 
+            font-size: 14px; background: rgba(255,255,255,0.1); padding: 10px; 
+            border-radius: 5px; margin-top: 10px; color: #ffeb3b; 
+            font-weight: bold; border: 1px dashed rgba(255,235,59,0.3); line-height: 1.4;
+        }
+
+        .staff-info {
+            display: flex; justify-content: center; gap: 6px;
+            font-size: 10px; border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 8px; white-space: nowrap;
+        }
+
+        .quiz-container { 
+            background: white; padding: 25px; border-radius: 15px; 
+            width: 100%; max-width: 600px; text-align: center; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
+        }
         .progress-bar { height: 6px; background: #eee; border-radius: 3px; margin-bottom: 15px; overflow: hidden; }
         .progress-fill { height: 100%; background: var(--primary-color); width: 0%; transition: 0.3s; }
         .question-text { font-size: 20px; font-weight: bold; margin-bottom: 25px; color: #34495e; line-height: 1.6; }
+        
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .option-btn { padding: 15px; font-size: 17px; border: 2px solid #ecf0f1; border-radius: 10px; background: white; cursor: pointer; font-family: 'Vazirmatn', sans-serif; transition: 0.2s; }
+        .option-btn { 
+            padding: 15px; font-size: 17px; border: 2px solid #ecf0f1; 
+            border-radius: 10px; background: white; cursor: pointer; 
+            font-family: 'Vazirmatn', sans-serif; transition: 0.2s; 
+        }
         .option-btn:active { background: #f8f9fa; transform: scale(0.98); }
+        
         #results { display: none; }
         .score-display { font-size: 48px; font-weight: bold; color: var(--primary-color); margin: 10px 0; }
+        
+        /* تصميم زر إعادة المحاولة */
+        .retry-btn {
+            background-color: #5d8aa8; color: white; border: none;
+            padding: 10px 20px; border-radius: 8px; font-size: 16px;
+            cursor: pointer; font-family: 'Vazirmatn'; margin-top: 15px;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s;
+        }
+        .retry-btn:hover { background-color: #4a708b; }
+        
         .loading { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary-color); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; margin: 15px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
         @media (max-width: 450px) { .options-grid { grid-template-columns: 1fr; } .header h1 { font-size: 17px; } }
     </style>
 </head>
@@ -54,11 +98,19 @@
     <p style="font-size: 14px; margin-bottom: 5px;">درجتك هي:</p>
     <div class="score-display" id="final-score">0</div>
     <p style="font-size: 13px; color: #666;">استعد للتحدي القادم في الأعداد والعمليات.</p>
-    <div id="status-area"><div class="loading"></div></div>
+    
+    <div id="retry-section" style="display:none;">
+        <button class="retry-btn" onclick="location.reload()">
+            <span>إعادة المحاولة</span> 🔄
+        </button>
+        <p style="font-size: 11px; color: #999; margin-top: 8px;">(لديك محاولة واحدة إضافية متبقية)</p>
+    </div>
+
+    <div id="status-area" style="margin-top:15px;"><div class="loading"></div></div>
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz1mVsqcKQOYFk8NfuZ_mx2YqH0r4w0jF0HDLxZwtZJEBAoYhtQfZzkpPCymMbv8iAB/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbw6CKxpc877UM7wQmDIVLlOR_aNiHDE19z-RP0PBPMPCszB72Ilb6_ArWMhrbP_mU3i/exec';
 
     const quizData = [
         { q: "ما القيمة المنزلية للرقم (5) في العدد 2534؟", a: ["5", "50", "500", "5000"], c: 2 },
@@ -79,12 +131,10 @@
     ];
 
     let currentIdx = 0, score = 0, qStats = [];
-    
-    // إدارة المحاولات
-    let attempts = parseInt(localStorage.getItem('nafis_attempts_count')) || 0;
+    let attempts = parseInt(localStorage.getItem('nafis_v9_attempts')) || 0;
 
     if(attempts >= 2) {
-        document.body.innerHTML = "<div class='quiz-container' style='margin-top:50px;'><h3>عذراً!</h3><p>لقد استنفدت جميع المحاولات المتاحة لك (محاولتان).</p></div>";
+        document.body.innerHTML = "<div class='quiz-container' style='margin-top:50px;'><h3>عذراً يا بطل!</h3><p>لقد استنفدت جميع المحاولات المتاحة لك.</p></div>";
     }
 
     function loadQuestion() {
@@ -116,20 +166,20 @@
         document.getElementById('results').style.display = 'block';
         document.getElementById('final-score').innerText = score + " / 15";
         
-        // زيادة عدد المحاولات وحفظها
         attempts++;
-        localStorage.setItem('nafis_attempts_count', attempts);
+        localStorage.setItem('nafis_v9_attempts', attempts);
+
+        // إظهار زر الإعادة فقط إذا كانت المحاولة الأولى
+        if (attempts < 2) {
+            document.getElementById('retry-section').style.display = 'block';
+        }
 
         fetch(scriptURL, {
             method: 'POST',
             mode: 'no-cors',
-            body: JSON.stringify({ 
-                score: score, 
-                qStats: qStats,
-                attempt: attempts // إرسال رقم المحاولة
-            })
+            body: JSON.stringify({ score: score, qStats: qStats, attempt: attempts })
         }).then(() => {
-            document.getElementById('status-area').innerHTML = "<p style='color:green; font-weight:bold; font-size:12px;'>✓ تم تحديث سجل المعلم (المحاولة " + attempts + ")</p>";
+            document.getElementById('status-area').innerHTML = "<p style='color:green; font-weight:bold; font-size:11px;'>✓ تم تحديث السجل بنجاح</p>";
         }).catch(() => {
             document.getElementById('status-area').innerHTML = "";
         });
